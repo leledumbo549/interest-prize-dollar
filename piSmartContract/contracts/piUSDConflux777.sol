@@ -16,15 +16,12 @@ contract piUSDConflux777 is ERC777 {
   }
 
   constructor(address[] memory defaultOperators) ERC777("Prize Interest Dollar", "piUSD", defaultOperators) public {
+    _mint(msg.sender, msg.sender, 1e24, "", "");
   }
 
   // constructor() ERC20Detailed("Prize Interest Dollar", "piUSD", 18) public {
   //   _mint(msg.sender, 1e24);
   // }
-
-  function hack() public {
-    _mint(msg.sender, msg.sender, 1e24, "", "");
-  }
 
   function transfer(address recipient, uint256 amount) public returns (bool) {
     super.transfer(recipient, amount);
