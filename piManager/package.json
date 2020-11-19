@@ -1,0 +1,16 @@
+{
+  "name": "cfxPrizeDai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "conflux-crosschain": "^1.2.1",
+    "dotenv": "^8.2.0",
+    "ethers": "^5.0.20",
+    "express": "^4.17.1",
+    "js-conflux-sdk": "^1.1.1",
+    "jsonfile": "^6.1.0",
+    "moment": "^2.29.1"
+  }
+}
