@@ -26,6 +26,8 @@ const PRIVATE_KEY_2 = process.env.PRIVATE_KEY_2;
 const ADDRESS_PRIZETOKEN = '0x86cca06c660ad995d4ecd49be9bbdd8113fdefca'; // caLink address on conflux
 const ADDRESS_PIUSDCONFLUX = '0x8961A4a15DBE65e742097CCcB87c1863e22e07EC'; // on conflux
 const ADDRESS_PIUSDETH = '0x35D70a7fCdB1cf4d2B40AbA7aE517F81d0F74bF4'; // on eth
+const ADDRESS_ALINK = '0xec23855ff01012e1823807ce19a790cebc4a64da';
+const ADDRESS_SHUTTLEFLOW = '0x604cCd4Ef1fD80A01eB4A4a8A3fC8275A880e3Ca';
 const ABI_IERC20 = require('./abi/IERC20.json');
 const ABI_PIUSDCONFLUX = require('./abi/PIUSDCONFLUX.json');
 const ABI_PIUSDETH = require('./abi/PIUSDETH.json');
@@ -82,10 +84,13 @@ class Singleton {
       const provider = new ethers.providers.JsonRpcProvider(INFURA_URL);
       const wallet = new ethers.Wallet(PRIVATE_KEY_2, provider);
       const piUSD = new ethers.Contract(ADDRESS_PIUSDETH, ABI_PIUSDETH, wallet);
+      const aLINK = new ethers.Contract(ADDRESS_ALINK, ABI_IERC20, wallet);
 
       this.piUSD = piUSD;
-      const symbol = await piUSD.symbol();
-      console.log(symbol);
+      this.aLINK = aLINK;
+      this.stat.managerShuttleflowAddress = ADDRESS_SHUTTLEFLOW;
+      const aLINKinShuttleflow = await aLINK.balanceOf(ADDRESS_SHUTTLEFLOW);
+      console.log(aLINKinShuttleflow.toString());
     } catch (err) {
       console.error(err);
     }
@@ -97,10 +102,17 @@ class Singleton {
       const atokenBalanceLocked = await piUSD.interestTokenBalance();
       const deposit = await piUSD.getTotalDeposit();
       const interest = await piUSD.getInterest();
+      const aLINKinShuttleflow = await this.aLINK.balanceOf(ADDRESS_SHUTTLEFLOW);
+      console.log(aLINKinShuttleflow.toString());
+
+      this.stat.aLINKinShuttleflow = aLINKinShuttleflow.toString();
       this.stat.atokenBalanceLocked = atokenBalanceLocked.toString();
       this.stat.deposit = deposit.toString();
       this.stat.interestNotSent = interest.toString();
-      if (interest.gt('1')) {
+
+      const interestInConflux = this.stat.interestAccumulated + '';
+
+      if (interest.gt('1') && aLINKinShuttleflow.toString() === '0') {
         const tx = await piUSD.sendInterestToConflux();
         console.log('sendInterestToConflux..');
         console.log('txHash: ', tx.hash);
@@ -112,6 +124,7 @@ class Singleton {
           amount: interest.toString()
         });
       }
+      if (this.stat.sendToConfluxTxs.length > 10) this.stat.sendToConfluxTxs.length = 10;
     } catch (err) {
       console.error(err);
     }
@@ -189,7 +202,7 @@ class Singleton {
 
       // if there is enough
       if (balance.gt('10') && slotsCount.gt('0')) {
-        const amount = balance.div(10).toString();
+        const amount = balance.toString();
 
         // send prize to one random spenders
         console.log('sendPrizeToLuckySpender..');
@@ -198,6 +211,7 @@ class Singleton {
           console.log(txHash);
           const lastWinner = await this.piUSDConflux.getLastWinner();
           this.stat.history.unshift({ txHash, ts: moment().unix(), prize: amount, winner: lastWinner });
+          this.stat.interestAccumulated = '0';
         } catch (err) {
           console.error(err);
         }
@@ -205,7 +219,7 @@ class Singleton {
 
       const lastWinner = await this.piUSDConflux.getLastWinner();
       this.stat.lastWinner = lastWinner;
-
+      if (this.stat.history.length > 10) this.stat.history.length = 10;
       // better log output
       const newOutput = JSON.stringify(this.stat);
       if (newOutput !== this.output) {
