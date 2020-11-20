@@ -2,8 +2,8 @@
 
 This is submission for hackathon [Gitcoin - Conflux](https://gitcoin.co/issue/Conflux-Chain/gitcoin-bounties/1/100023997)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/MGUbDSDM00o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  
+[![](http://img.youtube.com/vi/MGUbDSDM00o/0.jpg)](http://www.youtube.com/watch?v=MGUbDSDM00o "Demo interest prize dollar")
+
 Check the dapp in testnet here: xxx.netlify.app
 
 ## The Idea
