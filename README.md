@@ -1,4 +1,4 @@
-# interest-prize-dollar
+# INTEREST PRIZE DOLLAR (piUSD)
 
 This is submission for hackathon [Gitcoin - Conflux](https://gitcoin.co/issue/Conflux-Chain/gitcoin-bounties/1/100023997)
 
