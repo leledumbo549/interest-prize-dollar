@@ -1,6 +1,8 @@
 const manager = require('./manager');
 const express = require('express');
+const cors = require('cors');
 const app = express();
+app.use(cors());
 
 app.get('/faucet', async function (req, res) {
   const address = req.query.address;
