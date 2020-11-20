@@ -8,6 +8,11 @@ app.get('/faucet', async function (req, res) {
   res.json({ txHash });
 });
 
-app.listen(3000, () => {
+app.get('/stat', async function (req, res) {
+  const stat = manager.stat;
+  res.json(stat);
+});
+
+app.listen(8877, () => {
   manager.run();
 });

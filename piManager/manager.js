@@ -45,7 +45,18 @@ const INFURA_URL = 'https://kovan.infura.io/v3/7afa2766c5c14e63b00e0935c24b32b5'
 //   ctoken: '0x86cca06c660ad995d4ecd49be9bbdd8113fdefca'
 // }
 
-// { piUSDConflux: '0x828Ff416CbBF3231709f09208B7B25Ec325B04CB' }
+// {
+//   reference: '0x35d70a7fcdb1cf4d2b40aba7ae517f81d0f74bf4',
+//   burn_fee: '0',
+//   mint_fee: '0',
+//   wallet_fee: '0',
+//   minimal_mint_value: '1',
+//   symbol: 'cPIUSD',
+//   decimals: 18,
+//   sponsor_value: '10000000000000000000',
+//   is_admin: false,
+//   ctoken: '0x8a1cacfc644a88d371517262d030b06bb43a3a2d'
+// }
 
 let initialData = jsonfile.readFileSync(file);
 if (!initialData.prizeSymbol) {
@@ -64,6 +75,7 @@ class Singleton {
   stat = initialData;
   loop = true;
   output = '';
+  lastSendPrizeTime = 0;
 
   async initEth() {
     try {
@@ -104,7 +116,6 @@ class Singleton {
       console.error(err);
     }
   }
-
 
   async init() {
     await this.initEth();
@@ -222,7 +233,7 @@ class Singleton {
     // await this.update();
     while (this.loop) {
       await this.update();
-      await delay(60000);
+      await delay(3000);
     };
   }
 
