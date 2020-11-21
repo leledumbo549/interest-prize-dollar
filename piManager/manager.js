@@ -103,7 +103,6 @@ class Singleton {
       const deposit = await piUSD.getTotalDeposit();
       const interest = await piUSD.getInterest();
       const aLINKinShuttleflow = await this.aLINK.balanceOf(ADDRESS_SHUTTLEFLOW);
-      console.log(aLINKinShuttleflow.toString());
 
       this.stat.aLINKinShuttleflow = aLINKinShuttleflow.toString();
       this.stat.atokenBalanceLocked = atokenBalanceLocked.toString();
@@ -111,8 +110,13 @@ class Singleton {
       this.stat.interestNotSent = interest.toString();
 
       const interestInConflux = this.stat.interestAccumulated + '';
+      const interestInShuttleflow = aLINKinShuttleflow.toString();
+      console.log({
+        interestInConflux,
+        interestInShuttleflow
+      });
 
-      if (interest.gt('1') && aLINKinShuttleflow.toString() === '0') {
+      if (interest.gt('1') && interestInShuttleflow === '0' && interestInConflux === '0') {
         const tx = await piUSD.sendInterestToConflux();
         console.log('sendInterestToConflux..');
         console.log('txHash: ', tx.hash);
@@ -176,9 +180,6 @@ class Singleton {
   }
 
   async update() {
-
-    await this.updateEth();
-
     try {
       // retrieve amount link in this account
       let balance = await this.erc20.balanceOf(this.address);
@@ -201,7 +202,7 @@ class Singleton {
       this.stat.chance = chance;
 
       // if there is enough
-      if (balance.gt('10') && slotsCount.gt('0')) {
+      if (balance.gt('10') && slotsCount.gt('2')) {
         const amount = balance.toString();
 
         // send prize to one random spenders
@@ -220,11 +221,15 @@ class Singleton {
       const lastWinner = await this.piUSDConflux.getLastWinner();
       this.stat.lastWinner = lastWinner;
       if (this.stat.history.length > 10) this.stat.history.length = 10;
+
+      // update eth piusd
+      await this.updateEth();
+
       // better log output
       const newOutput = JSON.stringify(this.stat);
       if (newOutput !== this.output) {
         this.output = newOutput;
-        console.log(this.stat);
+        // console.log(this.stat);
       }
 
       jsonfile.writeFile(file, this.stat);

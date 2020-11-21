@@ -2,7 +2,7 @@
 
 This is submission for hackathon [Gitcoin - Conflux](https://gitcoin.co/issue/Conflux-Chain/gitcoin-bounties/1/100023997)
 
-[![](http://img.youtube.com/vi/MGUbDSDM00o/0.jpg)](http://www.youtube.com/watch?v=MGUbDSDM00o "Demo interest prize dollar")
+[![](http://img.youtube.com/vi/6YarK1sfIvY/0.jpg)](http://www.youtube.com/watch?v=6YarK1sfIvY "Prize Interest Dollar - Gitcoin Conflux Aave Hackathon")
 
 Check the dapp in testnet here: xxx.netlify.app
 
