@@ -2,8 +2,10 @@ const manager = require('./manager');
 const express = require('express');
 const cors = require('cors');
 const app = express();
-app.use(cors());
 
+
+app.use(cors());
+app.use(express.static('public'));
 app.get('/faucet', async function (req, res) {
   const address = req.query.address;
   const txHash = await manager.faucetTo(address);
