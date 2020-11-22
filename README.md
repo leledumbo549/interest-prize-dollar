@@ -12,6 +12,8 @@ An aave interest generated prize that given to the most stabletoken spender in c
 
 ## The Components
 
+![dapp diagram](https://res.cloudinary.com/dey55ubjm/image/upload/v1606056141/flow_gdpta5.png)
+
 - [Shuttleflow](https://conflux-dev.github.io/conflux-dex-docs/shuttleflow/) to enable smartcontract in ethereum to send token to address in conflux network
 - [Aave's Atokens](https://aave.com/aTokens/) to convert many stable token to interest earning stable token
 - piUSD ethereum. Smart contract to mint piUSD. Inside it, stabletoken will be converted to atoken and become collateral for piUSD minted. piUSD can be minted directly to conflux via shuttleflow
